@@ -1,0 +1,104 @@
+<extend name="Base/common" />
+<block name="body">
+    <div class="header_bg"></div>
+    <!-- 新闻开始 -->
+    <div class="about_cont_a">
+        <div class="about_cont_aa"></div>
+        <div class="about_cont_vc"></div>
+        <div class="main">
+            <div class="about_conta_top">
+                <div class="about_conta_topl">
+                    <img width="382" height="60" src="__STATIC__/wolsn/images/coll_a.jpg" />
+                </div>
+                <div class="about_conta_topr">
+                    <div class="about_conta_toprt">
+                        <span>当前位置：</span>
+                        <a href="{:U('Index/index')}">主页</a> &gt;
+                        <a href="{:U('Article/index?category='.$category['name'])}">{$category['title']}</a> &gt;
+                    </div>
+                    <div class="about_conta_toprb a">
+                        <!-- <volist name="menu_second" id="vo">
+                            <a href="{:U('Article/index?category='.$vo['name'])}">{$vo.title}</a>
+                            
+                        </volist> -->
+                        {:W('Category/lists', array($category['id'], ACTION_NAME == 'index'))}
+                    </div>
+                </div>
+            </div>
+            <div class="coll">
+                    <notempty name="list">
+                        <volist name="list" id="data">
+                            <div class="serve_a">
+                        <a href="{:U('Article/detail?id='.$data['id'])}">
+                            <div class="serve_aa">
+                                <b>标</b>
+                                <p>{$data.title}</p>
+                            </div>
+                            <div class="serve_ab">
+                                <b>述</b>
+                                <p>{$data.description}</p>
+                            </div>
+                        </a>
+                    </div>
+                            
+                    </volist>   
+                    <else />
+                    <article:list name="list" category="$category['id']" child="true">
+                    <div class="serve_a">
+                        <a href="{:U('Article/detail?id='.$list['id'])}">
+                            <div class="serve_aa">
+                                <b>标</b>
+                                <p>{$list.title}</p>
+                            </div>
+                            <div class="serve_ab">
+                                <b>述</b>
+                                <p>{$list.description}</p>
+                            </div>
+                        </a>
+                    </div>
+                </article:list>
+                    </notempty>
+                
+                <div class="nav">
+                    <div class="sort-page">
+                        <a>首页</a>
+                        <a class="page_yes">1</a>
+                        <a href="list_4_2.html">2</a>
+                        <a href="list_4_3.html">3</a>
+                        <a href="list_4_4.html">4</a>
+                        <a href="list_4_5.html">5</a>
+                        <a href="list_4_6.html">6</a>
+                        <a href="list_4_7.html">7</a>
+                        <a href="list_4_2.html">下一页</a>
+                        <a href="list_4_16.html">末页</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 新闻结束 -->
+        <!-- <div class="span9"> -->
+        <!-- Contents
+        ================================================== -->
+        <!-- <section id="contents">
+            <article:list name="list" category="$category['id']" child="true">
+                <div class="">
+                    <h3><a href="{:U('Article/detail?id='.$list['id'])}">{$list.title}</a></h3>
+                </div>
+                <div>
+                    <p class="lead">{$list.description}</p>
+                </div>
+                <div>
+                    <span><a href="{:U('Article/detail?id='.$list['id'])}">查看全文</a></span>
+                    <span class="pull-right">
+                        <span class="author">{$list.uid|get_username}</span>
+                        <span>于 {$list.create_time|date='Y-m-d H:i',###}</span> 发表在 <span>
+                        <a href="{:U('Article/lists?category='.get_category_name($list['category_id']))}">{$list.category_id|get_category_title}</a></span> 
+                        <span>阅读( {$list.view} )</span>&nbsp;&nbsp;
+                    </span>
+                </div>
+                <hr/>
+            </article:list>
+
+        </section> -->
+        <!-- </div> -->
+</block>

@@ -1,0 +1,146 @@
+<extend name="Public/base" />
+<block name="body">
+    <!-- 标题栏 -->
+    <div class="main-title">
+        <h2>首页横幅</h2>
+    </div>
+    <div class="cf">
+        <div class="fl">
+            <a class="btn" href="{:U('Banner/add')}">新 增</a>
+            <button class="btn ajax-post" url="{:U('Banner/changeStatus',array('method'=>'resume'))}" target-form="ids">启 用</button>
+            <button class="btn ajax-post" url="{:U('Banner/changeStatus',array('method'=>'forbid'))}" target-form="ids">禁 用</button>
+            <button class="btn ajax-post confirm" url="{:U('Banner/changeStatus',array('method'=>'delete'))}" target-form="ids">删 除</button>
+        </div>
+        <!-- 高级搜索 -->
+        <!-- <div class="search-form fr cf">
+			<div class="sleft">
+				<input type="text" name="nickname" class="search-input" value="{:I('nickname')}" placeholder="请输入用户昵称或者ID">
+				<a class="sch-btn" href="javascript:;" id="search" url="{:U('index')}"><i class="btn-search"></i></a>
+			</div>
+		</div> -->
+    </div>
+    <!-- 数据列表 -->
+    <div class="data-table table-striped">
+        <table class="">
+            <thead>
+                <tr>
+                    <th class="row-selected row-selected">
+                        <input class="check-all" type="checkbox" />
+                    </th>
+                    <th class="">ID</th>
+                    <th class="">图片</th>
+                    <th class="">顺序</th>
+                    <!-- <th class="">登录次数</th> -->
+                    <th class="">上传时间</th>
+                    <!-- <th class="">状态</th> -->
+                    <th class="">操作</th>
+                </tr>
+            </thead>
+            <tbody class="banner">
+                <notempty name="_list">
+                    <volist name="_list" id="vo">
+                        <tr>
+                            
+                                
+                                <td>
+                                    <input class="ids" type="checkbox" name="id[]" value="{$vo.id}" />
+                                </td>
+                                <td>{$vo.id} </td>
+                                <td>
+                                    <div style="width: 100px;height: 50px;overflow: hidden;">
+                                        <img src="__ROOT__{$vo['pic_id']|get_cover='path'}" />
+                                    </div>
+                                </td>
+                                <!-- <td>{$vo.score}</td> -->
+                                <td>
+                                	<form action="{:U('edit')}" method="post">
+                                		<input type="hidden" name="id" value="{$vo.id}">
+                                    	<input type="text" name="sort" class="text input-mini" value="{$vo.sort}">
+                                    	<span class="help-inline msg"></span>
+                                    </form>
+                                    
+                                </td>
+                                <td><span>{$vo.create_time|time_format}</span></td>
+                                <td>
+                                    <eq name="vo.status" value="1">
+                                        <a href="{:U('Banner/changeStatus?method=forbid&id='.$vo['id'])}" class="ajax-get">禁用</a>
+                                        <else/>
+                                        <a href="{:U('Banner/changeStatus?method=resume&id='.$vo['id'])}" class="ajax-get">启用</a>
+                                    </eq>
+                                    <a href="{:U('Banner/changeStatus?method=delete&id='.$vo['id'])}" class="confirm ajax-get">删除</a>
+                                </td>
+                            
+                        </tr>
+                    </volist>
+                    <else/>
+                    <td colspan="9" class="text-center"> aOh! 暂时还没有内容! </td>
+                </notempty>
+            </tbody>
+        </table>
+    </div>
+    <div class="page">
+        {$_page}
+    </div>
+</block>
+<block name="script">
+    <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+    <script type="text/javascript">
+    //搜索功能
+    $("#search").click(function() {
+        var url = $(this).attr('url');
+        var query = $('.search-form').find('input').serialize();
+        query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+        query = query.replace(/^&/g, '');
+        if (url.indexOf('?') > 0) {
+            url += '&' + query;
+        } else {
+            url += '?' + query;
+        }
+        window.location.href = url;
+    });
+    //回车搜索
+    $(".search-input").keyup(function(e) {
+        if (e.keyCode === 13) {
+            $("#search").click();
+            return false;
+        }
+    });
+    //导航高亮
+    highlight_subnav('{:U('
+        Banner / index ')}');
+
+
+    (function($) {
+        /* 实时更新分类信息 */
+        $(".banner")
+        	.on("submit", "form", function(){
+					var self = $(this);
+					$.post(
+						self.attr("action"),
+						self.serialize(),
+						function(data){
+							/* 提示信息 */
+							var name = data.status ? "success" : "error", msg;
+							msg = self.find(".msg").addClass(name).text(data.info)
+									  .css("display", "inline-block");
+							setTimeout(function(){
+								msg.fadeOut(function(){
+									msg.text("").removeClass(name);
+								});
+							}, 1000);
+						},
+						"json"
+					);
+					return false;
+				})
+            .on("focus", "input", function() {
+                $(this).data('param', $(this).closest("form").serialize());
+            })
+            .on("blur", "input", function() {
+                if ($(this).data('param') != $(this).closest("form").serialize()) {
+                    $(this).closest("form").submit();
+                }
+            });
+    })(jQuery);
+    </script>
+</block>

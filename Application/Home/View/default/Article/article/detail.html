@@ -1,0 +1,47 @@
+<extend name="Base/common"/>
+
+
+
+<block name="body">
+	<div class="header_bg"></div>
+	<div class="ndBody"> 
+
+   <div class="ndContent"> 
+    <h4 class="ndTitle">{$info.title}</h4> 
+    <div class="nqlDate"> 
+     <span class="nqldDay">{$info.update_time|date='d',###}</span> 
+     <span class="nqldMy">{$info.update_time|date='Y-m',###}</span> 
+    </div> 
+
+    <div class="ndInfo"> 
+     <span class="ndili">编辑：{$info.uid|get_username}</span> 
+     <span class="ndili">源于：www.wolsn.cn</span> 
+     <span class="ndili">浏览：<span class="red" id="viewsCount">{$info.view}</span> 次</span> 
+     <span class="ndili"> 
+      </span> 
+    </div> 
+    <div class="ndIntro"> 
+     	{$info.content}
+    </div> 
+    <div class="collb_ld"> 
+     <div class="collb_ldl"> 
+      <b></b> 上一篇： 
+      <a href="/news/dongtai/350.html" class="a">祛斑世家官方网站第三年续约合作中</a> 
+     </div> 
+     <div class="collb_ldr"> 
+      <b></b> 下一篇： 
+      <a href="#" class="b">没有了</a> 
+     </div> 
+    </div> 
+    <div class="ndBottom"> 
+     <a href="javascript:window.history.go(-1);" class="ndBack">BACK</a> 
+    </div> 
+   </div> 
+  </div> 
+    <div class="span9 main-content">
+        <!-- Contents
+        ================================================== -->
+
+        {:hook('documentDetailAfter',$info)}
+    </div>
+</block>
